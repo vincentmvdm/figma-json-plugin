@@ -174,168 +174,7 @@
           "constrainProportions": false,
           "layoutGrow": 0,
           "layoutPositioning": "AUTO",
-          "children": [
-            {
-              "id": "201:6366",
-              "name": "Image 3",
-              "visible": true,
-              "locked": false,
-              "componentPropertyReferences": null,
-              "opacity": 1,
-              "blendMode": "PASS_THROUGH",
-              "isMask": false,
-              "effects": [
-                {
-                  "type": "LAYER_BLUR",
-                  "radius": 50,
-                  "visible": true
-                }
-              ],
-              "effectStyleId": "",
-              "fills": [
-                {
-                  "type": "IMAGE",
-                  "visible": true,
-                  "opacity": 1,
-                  "blendMode": "NORMAL",
-                  "scaleMode": "FILL",
-                  "imageTransform": [
-                    [1, 0, 0],
-                    [0, 1, 0]
-                  ],
-                  "scalingFactor": 0.5,
-                  "rotation": 0,
-                  "filters": {
-                    "exposure": 0,
-                    "contrast": 0,
-                    "saturation": 0,
-                    "temperature": 0,
-                    "tint": 0,
-                    "highlights": 0,
-                    "shadows": 0
-                  },
-                  "imageHash": "f84de2bb774f89c5770636122b8d8b54bd9187d3"
-                }
-              ],
-              "fillStyleId": "",
-              "strokes": [],
-              "strokeStyleId": "",
-              "strokeWeight": 0.9960888028144836,
-              "strokeAlign": "INSIDE",
-              "strokeJoin": "MITER",
-              "dashPattern": [],
-              "strokeCap": "NONE",
-              "strokeMiterLimit": 4,
-              "x": 1039.2091064453125,
-              "y": 9.225830078125,
-              "width": 1287.9937744140625,
-              "height": 1725.733642578125,
-              "rotation": -37.02647173266725,
-              "layoutAlign": "INHERIT",
-              "constrainProportions": true,
-              "layoutGrow": 0,
-              "layoutPositioning": "AUTO",
-              "exportSettings": [],
-              "constraints": {
-                "horizontal": "MIN",
-                "vertical": "MIN"
-              },
-              "cornerRadius": 0,
-              "cornerSmoothing": 0,
-              "topLeftRadius": 0,
-              "topRightRadius": 0,
-              "bottomLeftRadius": 0,
-              "bottomRightRadius": 0,
-              "reactions": [],
-              "strokeTopWeight": 0.9960888028144836,
-              "strokeBottomWeight": 0.9960888028144836,
-              "strokeLeftWeight": 0.9960888028144836,
-              "strokeRightWeight": 0.9960888028144836,
-              "type": "RECTANGLE"
-            },
-            {
-              "id": "201:6367",
-              "name": "Image 4",
-              "visible": true,
-              "locked": false,
-              "componentPropertyReferences": null,
-              "opacity": 1,
-              "blendMode": "PASS_THROUGH",
-              "isMask": false,
-              "effects": [],
-              "effectStyleId": "",
-              "fills": [
-                {
-                  "type": "IMAGE",
-                  "visible": true,
-                  "opacity": 1,
-                  "blendMode": "NORMAL",
-                  "scaleMode": "FILL",
-                  "imageTransform": [
-                    [1, 0, 0],
-                    [0, 1, 0]
-                  ],
-                  "scalingFactor": 0.5,
-                  "rotation": 0,
-                  "filters": {
-                    "exposure": 0,
-                    "contrast": 0,
-                    "saturation": 0,
-                    "temperature": 0,
-                    "tint": 0,
-                    "highlights": 0,
-                    "shadows": 0
-                  },
-                  "imageHash": "f84de2bb774f89c5770636122b8d8b54bd9187d3"
-                }
-              ],
-              "fillStyleId": "",
-              "strokes": [],
-              "strokeStyleId": "",
-              "strokeWeight": 0.9960888028144836,
-              "strokeAlign": "INSIDE",
-              "strokeJoin": "MITER",
-              "dashPattern": [],
-              "strokeCap": "NONE",
-              "strokeMiterLimit": 4,
-              "x": 1067.1104736328125,
-              "y": 0,
-              "width": 1287.9937744140625,
-              "height": 1725.733642578125,
-              "rotation": -37.02647173266725,
-              "layoutAlign": "INHERIT",
-              "constrainProportions": true,
-              "layoutGrow": 0,
-              "layoutPositioning": "AUTO",
-              "exportSettings": [
-                {
-                  "format": "PNG",
-                  "suffix": "",
-                  "contentsOnly": true,
-                  "constraint": {
-                    "type": "SCALE",
-                    "value": 1
-                  }
-                }
-              ],
-              "constraints": {
-                "horizontal": "MIN",
-                "vertical": "MIN"
-              },
-              "cornerRadius": 0,
-              "cornerSmoothing": 0,
-              "topLeftRadius": 0,
-              "topRightRadius": 0,
-              "bottomLeftRadius": 0,
-              "bottomRightRadius": 0,
-              "reactions": [],
-              "strokeTopWeight": 0.9960888028144836,
-              "strokeBottomWeight": 0.9960888028144836,
-              "strokeLeftWeight": 0.9960888028144836,
-              "strokeRightWeight": 0.9960888028144836,
-              "type": "RECTANGLE"
-            }
-          ],
+          "children": [],
           "exportSettings": [],
           "fills": [],
           "fillStyleId": "",
@@ -370,7 +209,7 @@
           "backgroundStyleId": "",
           "clipsContent": false,
           "guides": [],
-          "expanded": false,
+          "expanded": true,
           "constraints": {
             "horizontal": "MIN",
             "vertical": "MIN"
@@ -1812,7 +1651,5 @@
   ],
   "components": {},
   "componentSets": {},
-  "images": {
-    "f84de2bb774f89c5770636122b8d8b54bd9187d3": "<555146 bytes>"
-  }
+  "images": {}
 }

@@ -44,7 +44,11 @@ export const readBlacklist = new Set([
 export const writeBlacklist = new Set([
   "id",
   "componentPropertyReferences",
-  "variantProperties"
+  "variantProperties",
+  // readonly
+  "overlayPositionType",
+  "overlayBackground",
+  "overlayBackgroundInteraction"
 ]);
 
 function notUndefined<T>(x: T | undefined): x is T {
@@ -249,7 +253,7 @@ async function loadFonts(n: F.DumpedFigma): Promise<void> {
   const fontNames = fontsToLoad(n);
   console.log("loading fonts:", fontNames);
 
-  await Promise.all(fontNames.map((f) => figma.loadFontAsync(f)));
+  await Promise.allSettled(fontNames.map((f) => figma.loadFontAsync(f)));
   console.log("done loading fonts.");
 }
 
@@ -401,7 +405,13 @@ export async function insert(n: F.DumpedFigma): Promise<SceneNode[]> {
   const offset = { x: 0, y: 0 };
   console.log("starting insert.");
 
+  // TODO: Understand how we save fonts
+  // And then come up with a resilient way to handle failed font loads
+  // E.g. if we can't load a font, we should make sure that all text nodes
+  // that use that font are replaced with e.g. Inter
   await loadFonts(n);
+
+  // TODO: Understand how we intended to use image hashes
 
   // Create all images
   console.log("creating images.");

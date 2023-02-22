@@ -116,78 +116,6 @@
               "strokesIncludedInLayout": false,
               "reactions": [],
               "type": "FRAME"
-            },
-            {
-              "id": "202:6275",
-              "name": "Product Image",
-              "visible": true,
-              "locked": false,
-              "componentPropertyReferences": null,
-              "opacity": 1,
-              "blendMode": "PASS_THROUGH",
-              "isMask": false,
-              "effects": [],
-              "effectStyleId": "",
-              "fills": [
-                {
-                  "type": "IMAGE",
-                  "visible": true,
-                  "opacity": 1,
-                  "blendMode": "NORMAL",
-                  "scaleMode": "FIT",
-                  "imageTransform": [
-                    [1, 0, 0],
-                    [0, 1, 0]
-                  ],
-                  "scalingFactor": 1,
-                  "rotation": 0,
-                  "filters": {
-                    "exposure": 0,
-                    "contrast": 0,
-                    "saturation": 0,
-                    "temperature": 0,
-                    "tint": 0,
-                    "highlights": 0,
-                    "shadows": 0
-                  },
-                  "imageHash": "3f19bb212bc222214faf179d0b414c4edefa7130"
-                }
-              ],
-              "fillStyleId": "",
-              "strokes": [],
-              "strokeStyleId": "",
-              "strokeWeight": 0.732421875,
-              "strokeAlign": "INSIDE",
-              "strokeJoin": "MITER",
-              "dashPattern": [],
-              "strokeCap": "NONE",
-              "strokeMiterLimit": 4,
-              "x": 0,
-              "y": -77,
-              "width": 375,
-              "height": 375,
-              "rotation": 0,
-              "layoutAlign": "INHERIT",
-              "constrainProportions": true,
-              "layoutGrow": 0,
-              "layoutPositioning": "AUTO",
-              "exportSettings": [],
-              "constraints": {
-                "horizontal": "MIN",
-                "vertical": "MIN"
-              },
-              "cornerRadius": 0,
-              "cornerSmoothing": 0,
-              "topLeftRadius": 0,
-              "topRightRadius": 0,
-              "bottomLeftRadius": 0,
-              "bottomRightRadius": 0,
-              "reactions": [],
-              "strokeTopWeight": 0.732421875,
-              "strokeBottomWeight": 0.732421875,
-              "strokeLeftWeight": 0.732421875,
-              "strokeRightWeight": 0.732421875,
-              "type": "RECTANGLE"
             }
           ],
           "exportSettings": [],
@@ -224,7 +152,7 @@
           "backgroundStyleId": "",
           "clipsContent": true,
           "guides": [],
-          "expanded": false,
+          "expanded": true,
           "constraints": {
             "horizontal": "MIN",
             "vertical": "MIN"
@@ -1030,7 +958,5 @@
   ],
   "components": {},
   "componentSets": {},
-  "images": {
-    "3f19bb212bc222214faf179d0b414c4edefa7130": "<3147977 bytes>"
-  }
+  "images": {}
 }

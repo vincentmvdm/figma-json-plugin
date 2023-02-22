@@ -111,7 +111,7 @@ class UI extends React.Component {
       {
         pluginMessage: {
           type: "testInsert",
-          data: [test1]
+          data: [test3]
         }
       },
       "*"
