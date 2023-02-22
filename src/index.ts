@@ -37,7 +37,8 @@ export const readBlacklist = new Set([
   "canUpgradeToNativeBidiSupport",
   // Deprecated but Figma still exposes it
   "horizontalPadding",
-  "verticalPadding"
+  "verticalPadding",
+  "backgrounds"
 ]);
 
 // Things in figmaJSON we are not writing right now
@@ -377,6 +378,7 @@ function safeAssign<T>(n: T, dict: PartialTransformingMixedValues<T>) {
       if (writeBlacklist.has(k)) {
         continue;
       }
+
       const v = dict[k];
       // Bit of a nasty hack here, but don't try to set these mixed sentinels
       if (v === F.MixedValue || v === undefined) {
@@ -402,6 +404,7 @@ function applyPluginData(
 }
 
 export async function insert(n: F.DumpedFigma): Promise<SceneNode[]> {
+  // TODO: This seems strange...
   const offset = { x: 0, y: 0 };
   console.log("starting insert.");
 
@@ -475,10 +478,22 @@ export async function insert(n: F.DumpedFigma): Promise<SceneNode[]> {
           strokeCap,
           strokeJoin,
           pluginData,
+          layoutMode,
+          itemReverseZIndex,
+          strokesIncludedInLayout,
           ...rest
         } = json;
         const f = factories[json.type]();
         addToParent(f);
+        // TODO: Consider creating separate function for auto layout
+        // TODO: Should this happen before resize?
+        // We can't even set some properties to false if there's no autolayout
+        // aka some properties become readonly if there's no auto layout
+        f.layoutMode = layoutMode;
+        if (f.layoutMode !== "NONE") {
+          f.itemReverseZIndex = itemReverseZIndex;
+          f.strokesIncludedInLayout = strokesIncludedInLayout;
+        }
         resizeOrLog(f, width, height);
         safeAssign(f, rest);
         applyPluginData(f, pluginData);
