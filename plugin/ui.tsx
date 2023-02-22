@@ -3,6 +3,12 @@ import { render } from "react-dom";
 import Toolbar, { InsertButton } from "./toolbar";
 import { PluginToUIMessage } from "./pluginMessage";
 
+import test1 from "./test-insert/test-1.json";
+import test2 from "./test-insert/test-2.json";
+import test3 from "./test-insert/test-3.json";
+import test4 from "./test-insert/test-4.json";
+import test5 from "./test-insert/test-5.json";
+
 interface UIState {
   dump?: any;
   showInsert: boolean;
@@ -100,6 +106,18 @@ class UI extends React.Component {
     }
   };
 
+  testInsert = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "testInsert",
+          data: [test1]
+        }
+      },
+      "*"
+    );
+  };
+
   doInsert = (json: string) => {
     const data = JSON.parse(json);
     if (typeof data !== "object") {
@@ -148,6 +166,9 @@ class UI extends React.Component {
             <InsertButton onInsert={this.onInsert} />
             <button onClick={this.logDefaults} style={{ userSelect: "none" }}>
               Log defaults
+            </button>
+            <button onClick={this.testInsert} style={{ userSelect: "none" }}>
+              Test insert
             </button>
           </Toolbar>
           <pre style={{ flex: 1, overflowY: "auto" }}>
