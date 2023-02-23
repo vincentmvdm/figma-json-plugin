@@ -49,7 +49,8 @@ export const writeBlacklist = new Set([
   // readonly
   "overlayPositionType",
   "overlayBackground",
-  "overlayBackgroundInteraction"
+  "overlayBackgroundInteraction",
+  "fontWeight" // readonly; encoded in fontName if not mixed
 ]);
 
 function notUndefined<T>(x: T | undefined): x is T {
@@ -249,6 +250,8 @@ export async function dump(
   };
 }
 
+// TODO: Handle missing fonts aka fonts we can't load
+// In general make sure even present fonts are loaded
 async function loadFonts(n: F.DumpedFigma): Promise<void> {
   console.log("starting font load...");
   const fontNames = fontsToLoad(n);
@@ -415,6 +418,7 @@ export async function insert(n: F.DumpedFigma): Promise<SceneNode[]> {
   await loadFonts(n);
 
   // TODO: Understand how we intended to use image hashes
+  // TODO: Should we add a try catch to images?
 
   // Create all images
   console.log("creating images.");

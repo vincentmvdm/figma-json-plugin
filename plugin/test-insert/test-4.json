@@ -3598,11 +3598,5 @@
   ],
   "components": {},
   "componentSets": {},
-  "images": {
-    "9022f5fb234096330f0e6de18624f7f69747fd8d": "<57513 bytes>",
-    "8410866ee7cc40d49312e2192732ee85d70edd46": "<48553 bytes>",
-    "b25a37fe480613158b61d883ba9ced49a286eec4": "<38391 bytes>",
-    "e351c41c77cb8d81d66f8fffa6da7995c31f1469": "<43584 bytes>",
-    "aeda36591795131bf998bbec61201a2d81c2c1f7": "<48243 bytes>"
-  }
+  "images": {}
 }

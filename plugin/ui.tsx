@@ -17,6 +17,9 @@ interface UIState {
   recentInsertText?: string;
 }
 
+// CENTER is no longer a supported value for layoutAlign
+// Make sure to read styles properly
+
 console.log("Starting plugin");
 // declare global onmessage = store.update;
 
@@ -112,7 +115,7 @@ class UI extends React.Component {
       {
         pluginMessage: {
           type: "testInsert",
-          data: [test1, test2, test3, test4, test5, test6]
+          data: [test6]
         }
       },
       "*"
