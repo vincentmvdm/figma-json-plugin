@@ -503,8 +503,28 @@ function safeAssign<T>(n: T, dict: PartialTransformingMixedValues<T>) {
   }
 }
 
-function hasKey<O extends object>(obj: O, key: keyof any): key is keyof O {
-  return key in obj;
+function applyPluginData(
+  n: BaseNodeMixin,
+  pluginData: F.SceneNode["pluginData"]
+) {
+  if (pluginData === undefined) {
+    return;
+  }
+  Object.entries(pluginData).map(([k, v]) => n.setPluginData(k, v));
+}
+
+function applyTextProps(
+  f: TextNode,
+  json: PartialTransformingMixedValues<F.TextNode>,
+  fontReplacements: Record<EncodedFont, EncodedFont>
+) {
+  const { type, width, height, fontName, pluginData, ...rest } = json;
+
+  if (fontName !== undefined) {
+    applyFontName(f, fontName, fontReplacements);
+  }
+
+  applyGenericProps(f, rest);
 }
 
 function transferOverrides(
@@ -517,8 +537,6 @@ function transferOverrides(
   if (originalNode.type !== newNode.type || overrides.length === 0) {
     return;
   }
-
-  console.log("WOOEEEH");
 
   const override = overrides.find((o) => o.id === originalNode.id);
 
@@ -537,6 +555,7 @@ function transferOverrides(
       }
 
       // TODO: This gets kinda hairy...
+      // TODO: APPLY PROPS HERE...
 
       // TODO: Hackin
       if (field === "width" || field === "height") {
@@ -563,14 +582,87 @@ function transferOverrides(
   }
 }
 
-function applyPluginData(
-  n: BaseNodeMixin,
-  pluginData: F.SceneNode["pluginData"]
+function applyInstanceProps(
+  f: InstanceNode,
+  json: PartialTransformingMixedValues<F.InstanceNode>
 ) {
-  if (pluginData === undefined) {
-    return;
+  const {
+    type,
+    children = [], // only to satisfy safeAssign, we can't control children in instances
+    componentId,
+    layoutMode,
+    itemReverseZIndex,
+    strokesIncludedInLayout,
+    width,
+    height,
+    pluginData,
+    overflowDirection, // prop cannot be overridden in an instance
+    overrides, // so should that be write blacklist?
+    isExposedInstance, // only applies when instance is in a component/component set TODO
+    ...rest
+  } = json;
+
+  // transferOverrides(json, f, json.overrides);
+
+  // TODO: Why is this needed?
+  // TODO: Plugin data, safeassign etc.?
+  // TODO: Separate out into function?
+  // We can't even set these properties to false if there's no auto layout
+
+  // f.layoutMode = layoutMode;
+  // if (layoutMode !== "NONE") {
+  //   f.itemReverseZIndex = itemReverseZIndex;
+  //   f.strokesIncludedInLayout = strokesIncludedInLayout;
+  // }
+  applyGenericProps(f, rest);
+}
+
+function applyFrameOrComponentProps(
+  f: FrameNode | ComponentNode,
+  json:
+    | PartialTransformingMixedValues<F.FrameNode>
+    | PartialTransformingMixedValues<F.ComponentNode>
+) {
+  const {
+    type,
+    children = [],
+    width,
+    height,
+    // Why did we remove these?
+    strokeCap,
+    strokeJoin,
+    pluginData,
+    layoutMode,
+    itemReverseZIndex,
+    strokesIncludedInLayout,
+    ...rest
+  } = json;
+
+  // f.layoutMode = layoutMode;
+  // if (layoutMode !== "NONE") {
+  //   f.itemReverseZIndex = itemReverseZIndex;
+  //   f.strokesIncludedInLayout = strokesIncludedInLayout;
+  // }
+  applyGenericProps(f, rest);
+}
+
+function applyGenericProps(
+  f: SceneNode,
+  json: PartialTransformingMixedValues<F.SceneNode>
+) {
+  const { type, width, height, pluginData, ...rest } = json;
+
+  // Check if layout mixin
+  if ("absoluteRenderBounds" in f) {
+    resizeOrLog(
+      f,
+      width !== undefined ? width : f.width,
+      height !== undefined ? height : f.height
+    );
   }
-  Object.entries(pluginData).map(([k, v]) => n.setPluginData(k, v));
+
+  safeAssign(f, rest);
+  applyPluginData(f, pluginData);
 }
 
 export async function insert(n: F.DumpedFigma): Promise<SceneNode[]> {
@@ -649,148 +741,69 @@ export async function insert(n: F.DumpedFigma): Promise<SceneNode[]> {
     };
 
     let n;
-    switch (json.type) {
-      case "INSTANCE":
-        const {
-          type,
-          children = [], // only to satisfy safeAssign, we can't control children in instances
-          componentId,
-          layoutMode,
-          itemReverseZIndex,
-          strokesIncludedInLayout,
-          width,
-          height,
-          pluginData,
-          overflowDirection, // prop cannot be overridden in an instance
-          overrides, // so should that be write blacklist?
-          isExposedInstance, // only applies when instance is in a component/component set TODO
-          ...rest
-        } = json;
-        let f: InstanceNode;
+    let f: SceneNode;
 
+    switch (json.type) {
+      case "INSTANCE": {
         try {
-          f = factories[type](componentId, availableComponents);
+          f = factories[json.type](json.componentId, availableComponents);
         } catch {
           console.error("blablaa");
           break;
         }
-
-        // TODO: Why is this needed?
         addToParent(f);
-        // TODO: Plugin data, safeassign etc.?
-        // TODO: Separate out into function?
-        // We can't even set these properties to false if there's no auto layout
-        f.layoutMode = layoutMode;
-        if (layoutMode !== "NONE") {
-          f.itemReverseZIndex = itemReverseZIndex;
-          f.strokesIncludedInLayout = strokesIncludedInLayout;
-        }
-        resizeOrLog(f, width, height);
-        safeAssign(f, rest);
-        applyPluginData(f, pluginData);
-        transferOverrides(json, f, overrides);
+        applyInstanceProps(f, json);
+        n = f;
         break;
-      // Handle types with children
+      }
       case "FRAME":
       case "COMPONENT": {
-        const {
-          type,
-          children = [],
-          width,
-          height,
-          // Why did we remove these?
-          strokeCap,
-          strokeJoin,
-          pluginData,
-          layoutMode,
-          itemReverseZIndex,
-          strokesIncludedInLayout,
-          ...rest
-        } = json;
-
         const f = factories[json.type]();
         addToParent(f);
-        // TODO: Separate out into function?
-        // We can't even set these properties to false if there's no auto layout
-        f.layoutMode = layoutMode;
-        if (layoutMode !== "NONE") {
-          f.itemReverseZIndex = itemReverseZIndex;
-          f.strokesIncludedInLayout = strokesIncludedInLayout;
-        }
-        resizeOrLog(f, width, height);
-        safeAssign(f, rest);
-        applyPluginData(f, pluginData);
+        applyFrameOrComponentProps(f, json);
         // console.log("building children: ", children);
-        children.forEach((c) => insertSceneNode(c, f));
+        json.children.forEach((c) => insertSceneNode(c, f));
         // console.log("applied to children ", f);
         n = f;
         break;
       }
       case "GROUP": {
-        const {
-          type,
-          children = [],
-          width,
-          height,
-          pluginData,
-          ...rest
-        } = json;
-        const nodes = children
+        const nodes = json.children
           .map((c) => insertSceneNode(c, target))
           .filter(notUndefined);
-
         const f = figma.group(nodes, target);
-        safeAssign(f, rest);
+        applyGenericProps(f, json);
         n = f;
         break;
       }
       case "BOOLEAN_OPERATION": {
-        // TODO: this isn't optimal
-        const { type, children, width, height, pluginData, ...rest } = json;
         const f = figma.createBooleanOperation();
-        safeAssign(f, rest);
-        applyPluginData(f, pluginData);
-        resizeOrLog(f, width, height);
+        applyGenericProps(f, json);
         n = f;
         break;
       }
-
       case "RECTANGLE":
       case "ELLIPSE":
       case "LINE":
       case "POLYGON":
       case "VECTOR": {
-        const { type, width, height, pluginData, ...rest } = json;
         const f = factories[json.type]();
-        safeAssign(
-          f,
-          rest as Partial<
-            RectangleNode & EllipseNode & LineNode & PolygonNode & VectorNode
-          >
-        );
-        applyPluginData(f, pluginData);
-        resizeOrLog(f, width, height, true);
+        applyGenericProps(f, json);
         n = f;
         break;
       }
-
       case "TEXT": {
-        const { type, width, height, fontName, pluginData, ...rest } = json;
         const f = figma.createText();
-        // Need to assign this first, because of font-loading rules :O
-        applyFontName(f, fontName, fontReplacements);
-        safeAssign(f, rest);
-        applyPluginData(f, pluginData);
-        resizeOrLog(f, width, height);
+        applyTextProps(f, json, fontReplacements);
         n = f;
         break;
       }
-
       default: {
         console.log(`element type not supported: ${json.type}`);
         break;
       }
     }
+
     if (n) {
       target.appendChild(n);
     } else {
